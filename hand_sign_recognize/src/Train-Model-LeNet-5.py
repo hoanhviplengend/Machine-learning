@@ -7,7 +7,7 @@ from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.keras.layers import Conv2D, AveragePooling2D, Flatten, Dense, Dropout, BatchNormalization
 from tensorflow.keras.callbacks import ReduceLROnPlateau, EarlyStopping, ModelCheckpoint
 
-checkpoint = ModelCheckpoint('..\Scripts\best_model_lenet.h5', monitor='val_loss', save_best_only=True, mode='min')
+checkpoint = ModelCheckpoint('../Scripts/best_model_lenet.h5', monitor='val_loss', save_best_only=True, mode='min')
 
 # Kiểm tra GPU
 if len(tf.config.experimental.list_physical_devices('GPU')) > 0:
@@ -86,7 +86,7 @@ reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.5, patience=5, min_lr
 early_stop = EarlyStopping(monitor='val_loss', patience=5, verbose=1, mode='min')
 
 # Huấn luyện mô hình
-history = model.fit(train_generator, epochs=50, validation_data=test_generator, callbacks=[checkpoint, reduce_lr, early_stop])
+history = model.fit(train_generator, epochs=20, validation_data=test_generator, callbacks=[checkpoint, reduce_lr, early_stop])
 
 # Lưu mô hình
 model.save('..\Scripts\hand_sign_recognition_lenet5.h5')

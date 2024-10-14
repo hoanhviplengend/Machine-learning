@@ -7,7 +7,7 @@ from tensorflow.keras.models import load_model  # type: ignore
 mp_hands = mp.solutions.hands
 mp_drawing = mp.solutions.drawing_utils
 # Tải mô hình
-model = load_model(r'..\Scripts\hand_sign_recognition_model.h5')
+model = load_model(r'..\Scripts\hand_sign_recognition_lenet5.h5')
 
 # Danh sách tên lớp
 class_names = [

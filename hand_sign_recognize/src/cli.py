@@ -1,8 +1,6 @@
 """Console script for hand_sign_recognize."""
 import hand_sign_recognize as model
 
-
-
 import typer
 from rich.console import Console
 
@@ -16,7 +14,8 @@ def main():
     console.print("Replace this message by putting your code into "
                "hand_sign_recognize.cli.main")
     console.print("See Typer documentation at https://typer.tiangolo.com/")
-    model.run()
+    model_path="../Scripts/best_model_lenet.h5"
+    model.run(model_path)
 
 
 

@@ -44,59 +44,61 @@ train_dir = r'..\Data\Gesture Image Pre-Processed Data'
 test_dir = r'..\Data\Gesture Image Pre-Processed Data - Test'
 
 # Tải dữ liệu
-X_train, y_train = load_data(train_dir)
-X_test, y_test = load_data(test_dir)
+X_train, Y_train = load_data(train_dir)
+X_test, Y_test = load_data(test_dir)
 
 # Đảm bảo dữ liệu có định dạng đúng
 X_train = X_train.astype('float32') / 255  # Chuẩn hóa dữ liệu
 X_test = X_test.astype('float32') / 255
 
 # Xây dựng mô hình LeNet-5 đã được điều chỉnh
-model = Sequential()
+def train_model_lenet_5(x_train, y_train, x_test, y_test):
+    model = Sequential()
 
-# Lớp tích chập đầu tiên
-model.add(Conv2D(32, kernel_size=(3, 3), activation='relu', input_shape=(32, 32, 3), padding='same'))  # 3 kênh màu
-model.add(BatchNormalization())
-model.add(AveragePooling2D())
+    # Lớp tích chập đầu tiên
+    model.add(Conv2D(32, kernel_size=(3, 3), activation='relu', input_shape=(32, 32, 3), padding='same'))  # 3 kênh màu
+    model.add(BatchNormalization())
+    model.add(AveragePooling2D())
 
-# Lớp tích chập thứ hai
-model.add(Conv2D(128, kernel_size=(3, 3), activation='relu', padding='same'))
-model.add(BatchNormalization())
-model.add(AveragePooling2D())
+    # Lớp tích chập thứ hai
+    model.add(Conv2D(128, kernel_size=(3, 3), activation='relu', padding='same'))
+    model.add(BatchNormalization())
+    model.add(AveragePooling2D())
 
-# Lớp tích chập thứ ba
-model.add(Conv2D(256, kernel_size=(3, 3), activation='relu', padding='same'))
-model.add(BatchNormalization())
-model.add(AveragePooling2D())
+    # Lớp tích chập thứ ba
+    model.add(Conv2D(256, kernel_size=(3, 3), activation='relu', padding='same'))
+    model.add(BatchNormalization())
+    model.add(AveragePooling2D())
 
-# Chuyển đổi đặc trưng thành vector
-model.add(Flatten())
+    # Chuyển đổi đặc trưng thành vector
+    model.add(Flatten())
 
-model.add(Dense(512, activation='relu'))  # Tăng số lượng nơ-ron
-model.add(Dropout(0.5))  # Thêm lớp Dropout để giảm overfitting
+    model.add(Dense(512, activation='relu'))  # Tăng số lượng nơ-ron
+    model.add(Dropout(0.5))  # Thêm lớp Dropout để giảm overfitting
 
-model.add(Dense(256, activation='relu'))  # Tăng số lượng nơ-ron
-model.add(Dropout(0.5))  # Thêm lớp Dropout để giảm overfitting
+    model.add(Dense(256, activation='relu'))  # Tăng số lượng nơ-ron
+    model.add(Dropout(0.5))  # Thêm lớp Dropout để giảm overfitting
 
-model.add(Dense(128, activation='relu'))  # Tăng số lượng nơ-ron
-model.add(Dropout(0.5))  # Thêm lớp Dropout để giảm overfitting
+    model.add(Dense(128, activation='relu'))  # Tăng số lượng nơ-ron
+    model.add(Dropout(0.5))  # Thêm lớp Dropout để giảm overfitting
 
-# Lớp output với số lớp tương ứng
-model.add(Dense(36, activation='softmax'))  # 36 lớp
+    # Lớp output với số lớp tương ứng
+    model.add(Dense(36, activation='softmax'))  # 36 lớp
 
-# Biên dịch mô hình
-model.compile(optimizer=Adam(learning_rate=0.001), loss='categorical_crossentropy', metrics=['accuracy'])
+    # Biên dịch mô hình
+    model.compile(optimizer=Adam(learning_rate=0.001), loss='categorical_crossentropy', metrics=['accuracy'])
 
-reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.5, patience=5, min_lr=0.00001)
-early_stop = EarlyStopping(monitor='val_loss', patience=5, verbose=1, mode='min')
+    reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.5, patience=5, min_lr=0.00001)
+    early_stop = EarlyStopping(monitor='val_loss', patience=5, verbose=1, mode='min')
 
-# Huấn luyện mô hình
-history = model.fit(X_train, y_train, epochs=50, validation_data=(X_test, y_test), batch_size=64,
-                    callbacks=[checkpoint, reduce_lr, early_stop])
+    # Huấn luyện mô hình
+    history = model.fit(x_train, y_train, epochs=50, validation_data=(x_test, y_test), batch_size=64,
+                        callbacks=[checkpoint, reduce_lr, early_stop])
 
-# Lưu mô hình
-model.save('../Scripts/hand_sign_recognition_lenet5.h5')
-
+    # Lưu mô hình
+    model.save('../Scripts/hand_sign_recognition_lenet5.h5')
+    return history
+history = train_model_lenet_5(X_train, Y_train, X_test, Y_test)
 # Vẽ biểu đồ loss
 plt.figure(figsize=(12, 4))
 

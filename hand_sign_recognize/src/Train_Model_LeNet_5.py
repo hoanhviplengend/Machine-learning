@@ -100,24 +100,25 @@ def train_model_lenet_5(x_train, y_train, x_test, y_test):
     return history
 history = train_model_lenet_5(X_train, Y_train, X_test, Y_test)
 # Vẽ biểu đồ loss
-plt.figure(figsize=(12, 4))
+def draw_chart_loss(history):
+    plt.figure(figsize=(12, 4))
 
-# Loss cho tập huấn luyện
-plt.subplot(1, 2, 1)
-plt.plot(history.history['loss'], label='Loss (Train)')
-plt.plot(history.history['val_loss'], label='Loss (Validation)')
-plt.title('Loss over Epochs')
-plt.xlabel('Epochs')
-plt.ylabel('Loss')
-plt.legend()
+    # Loss cho tập huấn luyện
+    plt.subplot(1, 2, 1)
+    plt.plot(history.history['loss'], label='Loss (Train)')
+    plt.plot(history.history['val_loss'], label='Loss (Validation)')
+    plt.title('Loss over Epochs')
+    plt.xlabel('Epochs')
+    plt.ylabel('Loss')
+    plt.legend()
 
-# Accuracy cho tập huấn luyện
-plt.subplot(1, 2, 2)
-plt.plot(history.history['accuracy'], label='Accuracy (Train)')
-plt.plot(history.history['val_accuracy'], label='Accuracy (Validation)')
-plt.title('Accuracy over Epochs')
-plt.xlabel('Epochs')
-plt.ylabel('Accuracy')
-plt.legend()
+    # Accuracy cho tập huấn luyện
+    plt.subplot(1, 2, 2)
+    plt.plot(history.history['accuracy'], label='Accuracy (Train)')
+    plt.plot(history.history['val_accuracy'], label='Accuracy (Validation)')
+    plt.title('Accuracy over Epochs')
+    plt.xlabel('Epochs')
+    plt.ylabel('Accuracy')
+    plt.legend()
 
-plt.show()
+    plt.show()

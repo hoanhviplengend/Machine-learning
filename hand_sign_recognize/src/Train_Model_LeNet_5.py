@@ -10,6 +10,7 @@ from tensorflow.keras.layers import Conv2D, AveragePooling2D, Flatten, Dense, Dr
 from tensorflow.keras.callbacks import ReduceLROnPlateau, EarlyStopping, ModelCheckpoint
 from tensorflow.keras.utils import to_categorical
 from PIL import Image
+
 warnings.filterwarnings("ignore")
 checkpoint = ModelCheckpoint('../Scripts/best_model_lenet.h5', monitor='val_loss', save_best_only=True, mode='min')
 
@@ -19,6 +20,7 @@ if len(tf.config.experimental.list_physical_devices('GPU')) > 0:
 else:
     print("Không tìm thấy GPU.")
     sys.exit()
+
 
 # Hàm để tải dữ liệu từ thư mục
 def load_data(data_dir):
@@ -39,6 +41,7 @@ def load_data(data_dir):
 
     return np.array(images), to_categorical(np.array(labels), num_classes=36)  # Trả về mảng NumPy của ảnh và nhãn
 
+
 # Đường dẫn đến thư mục dữ liệu
 train_dir = r'..\Data\Gesture Image Pre-Processed Data'
 test_dir = r'..\Data\Gesture Image Pre-Processed Data - Test'
@@ -51,6 +54,7 @@ X_test, Y_test = load_data(test_dir)
 X_train = X_train.astype('float32') / 255  # Chuẩn hóa dữ liệu
 X_test = X_test.astype('float32') / 255
 
+
 # Xây dựng mô hình LeNet-5 đã được điều chỉnh
 def train_model_lenet_5(x_train, y_train, x_test, y_test):
     model = Sequential()
@@ -61,23 +65,20 @@ def train_model_lenet_5(x_train, y_train, x_test, y_test):
     model.add(AveragePooling2D())
 
     # Lớp tích chập thứ hai
-    model.add(Conv2D(128, kernel_size=(3, 3), activation='relu', padding='same'))
+    model.add(Conv2D(64, kernel_size=(3, 3), activation='relu', padding='same'))
     model.add(BatchNormalization())
     model.add(AveragePooling2D())
 
     # Lớp tích chập thứ ba
-    model.add(Conv2D(256, kernel_size=(3, 3), activation='relu', padding='same'))
-    model.add(BatchNormalization())
-    model.add(AveragePooling2D())
 
     # Chuyển đổi đặc trưng thành vector
     model.add(Flatten())
 
-    model.add(Dense(512, activation='relu'))  # Tăng số lượng nơ-ron
-    model.add(Dropout(0.5))  # Thêm lớp Dropout để giảm overfitting
+    # model.add(Dense(512, activation='relu'))  # Tăng số lượng nơ-ron
+    # model.add(Dropout(0.5))  # Thêm lớp Dropout để giảm overfitting
 
-    model.add(Dense(256, activation='relu'))  # Tăng số lượng nơ-ron
-    model.add(Dropout(0.5))  # Thêm lớp Dropout để giảm overfitting
+    # model.add(Dense(256, activation='relu'))  # Tăng số lượng nơ-ron
+    # model.add(Dropout(0.5))  # Thêm lớp Dropout để giảm overfitting
 
     model.add(Dense(128, activation='relu'))  # Tăng số lượng nơ-ron
     model.add(Dropout(0.5))  # Thêm lớp Dropout để giảm overfitting
@@ -92,13 +93,17 @@ def train_model_lenet_5(x_train, y_train, x_test, y_test):
     early_stop = EarlyStopping(monitor='val_loss', patience=5, verbose=1, mode='min')
 
     # Huấn luyện mô hình
-    history = model.fit(x_train, y_train, epochs=50, validation_data=(x_test, y_test), batch_size=64,
+    history = model.fit(x_train, y_train, epochs=20, validation_data=(x_test, y_test), batch_size=32,
                         callbacks=[checkpoint, reduce_lr, early_stop])
 
     # Lưu mô hình
     model.save('../Scripts/hand_sign_recognition_lenet5.h5')
     return history
+
+
 history = train_model_lenet_5(X_train, Y_train, X_test, Y_test)
+
+
 # Vẽ biểu đồ loss
 def draw_chart_loss(history):
     plt.figure(figsize=(12, 4))
@@ -122,3 +127,4 @@ def draw_chart_loss(history):
     plt.legend()
 
     plt.show()
+draw_chart_loss(history)

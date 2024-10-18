@@ -23,7 +23,11 @@ canvas.pack()
 # Tải ảnh bằng Pillow
 
 # Đọc ảnh bằng OpenCV
+<<<<<<< HEAD
 img = Image.open(r"C:\Nhật Nam\Python\Machine-learning\hand_sign_recognize\Data\Gesture Image Pre-Processed Data - Test\0\769.jpg")
+=======
+img = Image.open(r"/hand_sign_recognize/Data/Gesture Image Pre-Processed Data - Test/0/769.jpg")
+>>>>>>> 952bbe147d2bbf39b214475f9636bb3f27820b6f
 
 # Vẽ hình chữ nhật lên ảnh
 image = cv2.cvtColor(np.asarray(img), cv2.COLOR_RGBA2BGR)

@@ -5,10 +5,11 @@ from typing import Optional
 import uvicorn
 import sys
 import os
-import json
-from datetime import datetime
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'src')))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'Scripts')))
 import hand_sign_recognize as model
+from datetime import datetime
+import Read_and_writeJson as raw
 app = FastAPI()
 
 class PathInput(BaseModel):
@@ -23,35 +24,17 @@ def creat_object_history(name, input, predict, time):
             "result" : predict,
             "time" : time
     }
-def read_json(file_path):
-    if os.path.exists(file_path) and os.path.getsize(file_path) > 0:  # Kiểm tra nếu file tồn tại và không trống
-        with open(file_path, 'r') as json_file:
-            try:
-                return json.load(json_file)
-            except json.JSONDecodeError:
-                return []
-    return []
 
-# Hàm ghi dữ liệu vào file JSON
-def write_to_json(file_path, data):
-    with open(file_path, 'w') as json_file:
-        json.dump(data, json_file, indent=4)
-
-
-def run_action(path: str):
-    predict = model.predict_new(None, path)
-    return predict
-
-path_history = "history.json"
-data_history = read_json(path_history)
+path_history = "../Data/history/history_FastAPI.json"
+data_history = raw.read_json(path_history)
 
 @app.post("/predict")  # Đảm bảo sử dụng @app.post
 async def run(input: PathInput):
+    predict = model.predict_new(None, input.path)
     now = datetime.now()
-    predict = run_action(input.path)
     history = creat_object_history("predict", input.path, predict, now.isoformat())
     data_history.append(history)
-    write_to_json(path_history, data_history)
+    raw.write_json(path_history, data_history)
     return {"result": predict}
 
 @app.post("/run_model")
@@ -60,7 +43,7 @@ async def run2(input: Modelintput):
     result = "True" if input.script == "run" else "False"
     history = creat_object_history("predict", input.script, result, now.isoformat())
     data_history.append(history)
-    write_to_json(path_history,data_history)
+    raw.write_json(path_history,data_history)
     if input.script == "run":
         model.run()
         return {"result": True}

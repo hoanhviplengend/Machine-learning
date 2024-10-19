@@ -1,7 +1,8 @@
-
 import cv2
 import numpy as np
 import os
+from rembg import remove
+
 threshold = 60
 blurValue = 41
 # Danh sách tên lớp
@@ -12,11 +13,10 @@ class_names = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
 
 # Hàm chuẩn bị ảnh cho mô hình
 def prepare_image(image):
-    # image=cv2.resize(image,(32,32))
-    # image=image.reshape(1,32,32,3)
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     blur = cv2.GaussianBlur(gray, (blurValue, blurValue), 0)
 
+    # nếu vùng bàn tay sáng dùng"THRESH_BINARY_INV" nếu vùng bàn tay tối dùng "THRESH_BINARY"
     ret, thresh = cv2.threshold(blur, threshold, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
     return ret, thresh
 
@@ -39,15 +39,23 @@ def remove_background(image):
 
     return background_removed
 
+
 # Dự đoán ảnh
 def predict_class(model, image):
-    prediction = model.predict(image)
+    # chuyển dđổi ảnh về định dạng ph hợp trước khi dự đoán
+    target = np.stack((image, image, image), axis=-1)
+    target = cv2.resize(target, (32, 32))
+    target = target.reshape(1, 32, 32, 3)
+
+    # dự đoán
+    prediction = model.predict(target)
     prediction_class_index = np.argmax(prediction, axis=-1)[0]
     confidence = prediction[0][prediction_class_index]
 
     if confidence < 0.5:  # Ngưỡng cho độ tin cậy
         return "Không chắc chắn"  # Không chắc chắn về dự đoán
     return class_names[prediction_class_index]
+
 
 # Lật ảnh theo chiều ngang
 def flip_images_horizontally(folder_path):
@@ -68,9 +76,25 @@ def flip_images_horizontally(folder_path):
             flipped_img = cv2.flip(img, 1)
 
             # Tạo tên file mới cho ảnh lật (thêm tiền tố 'flipped_')
-            #output_path = os.path.join(folder_path, "flipped_" + file)
+            # output_path = os.path.join(folder_path, "flipped_" + file)
 
             # Lưu ảnh đã lật
             cv2.imwrite(img_path, flipped_img)
 
     print("Đã lật tất cả ảnh theo chiều ngang.")
+
+
+def predict_image(model, image, type):
+    # đọc ảnh
+    if image is None:
+        return
+
+    # xóa nền
+    if type == "video":
+        img_rmb = remove_background(image)
+    else:
+        img_rmb = remove(image)
+
+    ret, img_prepared = prepare_image(img_rmb)
+    result = predict_class(model, img_prepared)
+    return result, img_prepared

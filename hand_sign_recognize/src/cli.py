@@ -1,5 +1,6 @@
 """Console script for hand_sign_recognize."""
-import hand_sign_recognize as model
+from predict import predict_by_video
+
 
 import typer
 from rich.console import Console
@@ -15,9 +16,10 @@ def main():
                "hand_sign_recognize.cli.main")
     console.print("See Typer documentation at https://typer.tiangolo.com/")
     model_path="../Scripts/best_model_lenet.h5"
-    model.run(model_path)
-
-
+    # type:
+    # "video" (bật camera và dự đoán liên tục)
+    # "photo" (bật camera nhấn "c" để chụp ảnh và dự đoán)
+    predict_by_video(model_path,"photo")
 
 if __name__ == "__main__":
     app()

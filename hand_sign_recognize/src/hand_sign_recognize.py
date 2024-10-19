@@ -8,6 +8,8 @@ from image_processing import remove_background, prepare_image
 mp_hands = mp.solutions.hands
 mp_drawing = mp.solutions.drawing_utils
 
+model_path = "../Scripts/best_model_lenet.h5"
+model = load_model(model_path)
 # Biến để đếm số ảnh chụp
 image_counter = 0
 cap_region_x_begin = 0.5
@@ -47,43 +49,14 @@ hands = mp_hands.Hands(static_image_mode=False,
                        min_tracking_confidence=0.5)
 
 
-def run(model_path):
-    model = load_model(model_path)
+def run():
     if model:
         while cap.isOpened():
             ret, frame = cap.read()
             if not ret:
                 print("Không thể đọc khung hình từ camera")
                 break
-
-            # Làm mịn ảnh
-            frame = cv2.bilateralFilter(frame, 5, 50, 100)
-            # Lật khung hình để cảm giác giống gương
-            frame = cv2.flip(frame, 1)
-            # Vẽ khung hình chữ nhật
-            cv2.rectangle(frame, (int(cap_region_x_begin * frame.shape[1]), 0),
-                          (frame.shape[1] - 50, int(cap_region_y_end * frame.shape[0]) - 100), (255, 0, 0), 2)
-
-            # Xóa nền ảnh
-            image = remove_background(frame)
-            cv2.imshow("Background Removed", image[0:int(cap_region_y_end * frame.shape[0]) - 100,
-                                             int(cap_region_x_begin * frame.shape[1]):frame.shape[1] - 50])
-
-            # Cắt ảnh theo vùng đã định nghĩa
-            cropped_image = image[0:int(cap_region_y_end * frame.shape[0]) - 100,
-                            int(cap_region_x_begin * frame.shape[1]):frame.shape[1] - 50]
-
-            ret, thresh = prepare_image(cropped_image)
-            cv2.imshow("Thresh", cv2.resize(thresh, None, fx=0.5, fy=0.5))
-
-            if np.count_nonzero(thresh) / (thresh.shape[0] * thresh.shape[1]) > 0.2:
-                # Chuyển đổi định dạng hình ảnh cho dự đoán
-                target = np.stack((thresh, thresh, thresh), axis=-1)
-                target = cv2.resize(target, (32, 32))
-                target = target.reshape(1, 32, 32, 3)
-                result = predict_class(model, target)
-                print("Dự đoán:", result)
-
+            predict_new(frame,path = None)
             # Hiển thị khung hình gốc
             cv2.imshow("Original", cv2.resize(frame, None, fx=0.5, fy=0.5))
             k = cv2.waitKey(10)
@@ -98,3 +71,36 @@ def run(model_path):
         cap.release()
         cv2.destroyAllWindows()
         hands.close()
+
+def predict_new(frame = None, path = None):
+    # Làm mịn ảnh
+    if frame is None:
+        frame = cv2.imread(path)
+    frame = cv2.bilateralFilter(frame, 5, 50, 100)
+    # Lật khung hình để cảm giác giống gương
+    frame = cv2.flip(frame, 1)
+    # Vẽ khung hình chữ nhật
+    cv2.rectangle(frame, (int(cap_region_x_begin * frame.shape[1]), 0),
+                  (frame.shape[1] - 50, int(cap_region_y_end * frame.shape[0]) - 100), (255, 0, 0), 2)
+
+    # Xóa nền ảnh
+    image = remove_background(frame)
+    cv2.imshow("Background Removed", image[0:int(cap_region_y_end * frame.shape[0]) - 100,
+                                     int(cap_region_x_begin * frame.shape[1]):frame.shape[1] - 50])
+
+    # Cắt ảnh theo vùng đã định nghĩa
+    cropped_image = image[0:int(cap_region_y_end * frame.shape[0]) - 100,
+                    int(cap_region_x_begin * frame.shape[1]):frame.shape[1] - 50]
+
+    ret, thresh = prepare_image(cropped_image)
+    cv2.imshow("Thresh", cv2.resize(thresh, None, fx=0.5, fy=0.5))
+
+    if np.count_nonzero(thresh) / (thresh.shape[0] * thresh.shape[1]) > 0.2:
+        # Chuyển đổi định dạng hình ảnh cho dự đoán
+        target = np.stack((thresh, thresh, thresh), axis=-1)
+        target = cv2.resize(target, (32, 32))
+        target = target.reshape(1, 32, 32, 3)
+        result = predict_class(model, target)
+        print("Dự đoán:", result)
+        return result
+

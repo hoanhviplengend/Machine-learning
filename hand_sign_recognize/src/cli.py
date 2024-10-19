@@ -15,7 +15,7 @@ def main():
                "hand_sign_recognize.cli.main")
     console.print("See Typer documentation at https://typer.tiangolo.com/")
     model_path="../Scripts/best_model_lenet.h5"
-    model.run(model_path)
+    model.run()
 
 
 

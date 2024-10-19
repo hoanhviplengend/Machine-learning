@@ -1,27 +1,29 @@
-from fastapi import FastAPI, Request
-from fastapi.responses import HTMLResponse
-from fastapi.templating import Jinja2Templates
+from fastapi import FastAPI
+from pydantic import BaseModel
+from typing import Optional
 import sys
 import os
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'src')))
 import hand_sign_recognize as model
-
 app = FastAPI()
 
-templates = Jinja2Templates(directory="templates")
+class PathInput(BaseModel):
+    path: Optional[str] = r"A:\myProject\projectML\Check\1.jpg"
 
-@app.get("/", response_class=HTMLResponse)
-async def read_root(request: Request):
-    return templates.TemplateResponse("main.html", {"request": request})
+def run_action(path: str):
+    result = model.predict_new(None, path)
+    return result
 
-@app.post("/run")
-async def run_action():
-    # Thực hiện một hành động nào đó khi nút Run được nhấn
-    return model.run()
+@app.post("/run")  # Đảm bảo sử dụng @app.post
+async def run(input: PathInput):
+    result = run_action(input.path)
+    return {"result": result}
 
-@app.get("/items/{item_id}")
-def read_item(item_id: int, q: str = None):
-    return {"item_id": item_id, "query": q}
 
-#uvicorn FastAPI:app --reload to run
+
+
+# uvicorn FastAPI:app --reload  ---> run
+# http://127.0.0.1:8000/docs
+#click Post -> Try it out -> add your path
+#exacute

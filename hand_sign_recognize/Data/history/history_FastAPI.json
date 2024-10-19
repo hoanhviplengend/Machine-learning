@@ -1,0 +1,26 @@
+[
+    {
+        "name": "predict",
+        "input": "no-run",
+        "result": "False",
+        "time": "2024-10-19T17:58:20.153383"
+    },
+    {
+        "name": "predict",
+        "input": "A:\\myProject\\projectML\\Check\\1.jpg",
+        "result": "N",
+        "time": "2024-10-19T17:58:28.295266"
+    },
+    {
+        "name": "predict",
+        "input": "A:\\myProject\\projectML\\Check\\4.jpg",
+        "result": "0",
+        "time": "2024-10-19T17:58:31.809586"
+    },
+    {
+        "name": "predict",
+        "input": "A:\\myProject\\projectML\\Check\\1.jpg",
+        "result": "N",
+        "time": "2024-10-19T19:33:01.373268"
+    }
+]

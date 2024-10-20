@@ -1,5 +1,7 @@
 """Console script for hand_sign_recognize."""
-from predict import predict_by_video
+from hand_sign_recognize.src.predict import predict_by_photo, predict_by_video
+import warnings
+warnings.filterwarnings("ignore")
 
 
 import typer
@@ -19,7 +21,7 @@ def main():
     # type:
     # "video" (bật camera và dự đoán liên tục)
     # "photo" (bật camera nhấn "c" để chụp ảnh và dự đoán)
-    predict_by_video(model_path,"photo")
-
+    predict_by_video(model_path,"video")
+    #predict_by_photo(model_path,"../tests/w.jpg")
 if __name__ == "__main__":
     app()

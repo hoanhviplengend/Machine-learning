@@ -48,7 +48,7 @@ master_doc = 'index'
 # General information about the project.
 project = 'HandSignRecognize'
 copyright = "2024, Hoanh"
-author = "Hoanh"
+author = "Hoanh", "Nam"
 
 # The version info for the project you're documenting, acts as replacement
 # for |version| and |release|, also used in various other places throughout

@@ -1,5 +1,6 @@
 
 from fastapi import FastAPI
+from prompt_toolkit.key_binding.bindings.named_commands import complete
 from pydantic import BaseModel
 from typing import Optional
 import uvicorn
@@ -7,10 +8,13 @@ import sys
 import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'src')))
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'Scripts')))
-import hand_sign_recognize as model
+import predict as model
 from datetime import datetime
 from hand_sign_recognize.Scripts import Read_and_writeJson as raw
 app = FastAPI()
+path_history = "../Data/history/history_FastAPI.json"
+model_path = "../Scripts/best_model_lenet.h5"
+data_history = raw.read_json(path_history)
 
 class PathInput(BaseModel):
     path: Optional[str] = r"A:\myProject\projectML\Check\1.jpg"
@@ -18,36 +22,54 @@ class PathInput(BaseModel):
 class Modelintput(BaseModel):
     script: Optional[str] = ""
 
-def creat_object_history(name, input, predict, time):
+def creat_object_history(name, input, predict,completed, time):
     return {"name":name,
             "input" :input,
-            "result" : predict,
+            "predict":predict,
+            "completed" :completed,
             "time" : time
     }
 
-path_history = "../Data/history/history_FastAPI.json"
-data_history = raw.read_json(path_history)
-
 @app.post("/predict")  # Đảm bảo sử dụng @app.post
 async def run(input: PathInput):
-    predict = model.predict_new(None, input.path)
+    completed, predict = model.predict_by_photo(model_path, input.path)
     now = datetime.now()
-    history = creat_object_history("predict", input.path, predict, now.isoformat())
+    history = creat_object_history("predict image from file_path",
+                                   input.path,
+                                   predict,
+                                   completed,
+                                   now.isoformat())
     data_history.append(history)
     raw.write_json(path_history, data_history)
-    return {"result": predict}
+    return creat_object_history("predict image from file_path",
+                                   input.path,
+                                   predict,
+                                   completed,
+                                   now.isoformat())
 
 @app.post("/run_model")
 async def run2(input: Modelintput):
     now = datetime.now()
-    result = "True" if input.script == "run" else "False"
-    history = creat_object_history("predict", input.script, result, now.isoformat())
-    data_history.append(history)
-    raw.write_json(path_history,data_history)
-    if input.script == "run":
-        model.run()
-        return {"result": True}
-    return {"result": False}
+    result = "True" if input.script == "video" or input.script == "photo" else "False"
+    if input.script == "video" or input.script == "photo":
+        completed, preddict = model.predict_by_video(model_path,input.script)
+        history = creat_object_history("predict from camera",
+                                       input.script,
+                                       preddict,
+                                       completed,
+                                       now.isoformat())
+        data_history.append(history)
+        raw.write_json(path_history, data_history)
+        return creat_object_history("predict from camera",
+                                       input.script,
+                                       preddict,
+                                       completed,
+                                       now.isoformat())
+    return creat_object_history("predict from camera",
+                                       input.script,
+                                       ["None"],
+                                       False,
+                                       now.isoformat())
 
 if __name__ == "__main__":
     print("go to docs: http://127.0.0.1:8000/docs")

@@ -9,7 +9,7 @@ import sys
 import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'src')))
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'Scripts')))
-import predict as model
+from hand_sign_recognize.src import predict as model
 from datetime import datetime
 from hand_sign_recognize.Scripts import Read_and_writeJson as raw
 app = FastAPI()

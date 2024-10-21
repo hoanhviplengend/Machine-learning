@@ -17,10 +17,10 @@ def prepare_image(image):
     blur = cv2.GaussianBlur(gray, (blurValue, blurValue), 0)
 
     # nếu vùng bàn tay sáng dùng"THRESH_BINARY_INV" nếu vùng bàn tay tối dùng "THRESH_BINARY"
-    ret, thresh = cv2.threshold(blur, threshold, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+    ret, thresh = cv2.threshold(blur, threshold, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)
     return ret, thresh
 
-
+# Hàm xóa nền cho ảnh
 def remove_background(image):
     # Chuyển đổi ảnh sang không gian màu xám
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
@@ -40,9 +40,9 @@ def remove_background(image):
     return background_removed
 
 
-# Dự đoán ảnh
+# Dự đoán lớp xuất hiện
 def predict_class(model, image):
-    # chuyển dđổi ảnh về định dạng ph hợp trước khi dự đoán
+    # chuyển dđổi ảnh về định dạng phù hợp trước khi dự đoán
     target = np.stack((image, image, image), axis=-1)
     target = cv2.resize(target, (32, 32))
     target = target.reshape(1, 32, 32, 3)
@@ -83,7 +83,7 @@ def flip_images_horizontally(folder_path):
 
     print("Đã lật tất cả ảnh theo chiều ngang.")
 
-
+# Dự đoán ảnh (đầy đủ)
 def predict_image(model, image, type):
     # đọc ảnh
     if image is None:

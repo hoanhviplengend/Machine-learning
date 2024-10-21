@@ -8,10 +8,12 @@ version = "0.1.0"
 description = "This project recognizes hand signs using machine learning."
 readme = "README.rst"
 authors = [
-  {name = "Hoanh", email = "hoanhvip0g@gmail.com"}
+  {name = "Hoanh", email = "hoanhvip0g@gmail.com"},
+    {name = "Trần Ngô Nhật Nam", email = "zzbestnamzz@@gmail.com"}
 ]
 maintainers = [
-  {name = "Hoanh", email = "hoanhvip0g@gmail.com"}
+  {name = "Hoanh", email = "hoanhvip0g@gmail.com"},
+    {name = "Trần Ngô Nhật Nam", email = "zzbestnamzz@@gmail.com"}
 ]
 classifiers = [
 

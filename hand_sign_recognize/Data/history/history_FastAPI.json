@@ -364,5 +364,61 @@
         "predict": "X",
         "completed": true,
         "time": "2024-10-20T13:23:07.911871"
+    },
+    {
+        "name": "predict image from file_path",
+        "input": "A:\\myProject\\projectML\\Check\\1.jpg",
+        "predict": "X",
+        "completed": true,
+        "time": "2024-10-21T10:43:23.782829"
+    },
+    {
+        "name": "predict image from file_path",
+        "input": "test.jpg",
+        "predict": "2",
+        "completed": true,
+        "time": "2024-10-21T10:46:08.500403"
+    },
+    {
+        "name": "predict image from file_path",
+        "input": "test.jpg",
+        "predict": "W",
+        "completed": true,
+        "time": "2024-10-21T10:47:40.384493"
+    },
+    {
+        "name": "predict image from file_path",
+        "input": "test.jpg",
+        "predict": "D",
+        "completed": true,
+        "time": "2024-10-21T10:48:45.374563"
+    },
+    {
+        "name": "predict image from file_path",
+        "input": "https://th.bing.com/th/id/OIP.ZVUgl7uOtlxpr8TDZiN9IwHaLn?w=1078&h=1690&rs=1&pid=ImgDetMain",
+        "predict": "X",
+        "completed": true,
+        "time": "2024-10-21T10:51:27.094799"
+    },
+    {
+        "name": "predict image from file_path",
+        "input": "https://cdn1.vectorstock.com/i/1000x1000/13/90/horns-hand-satan-sign-finger-up-gesture-isolated-vector-22371390.jpg",
+        "predict": "",
+        "completed": false,
+        "time": "2024-10-21T10:52:58.329809"
+    },
+    {
+        "name": "predict image from file_path",
+        "input": "https://storage.googleapis.com/kagglesdsdata/datasets/589922/1064771/Test/A/1137_A.jpg?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=databundle-worker-v2%40kaggle-161607.iam.gserviceaccount.com%2F20241019%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20241019T093653Z&X-Goog-Expires=345600&X-Goog-SignedHeaders=host&X-Goog-Signature=2d039a286f4ce6081e70bc9964bb34fdf295dbb5822248190a9847614b928be17ef6da1ec9414f387a9077d383cd04dcd2bd94fa42a4c52658decbbc45d55f0810d9640007ed6151e13cd941e52b1abd046124a8ed8325c52e239f6af760ee4ed7e16c92a564b0c1627eade18074c75ee6453a5e99d5380456f4c2d0c8685e1a0bfd5db597dc42bc3091feee1fcfa0c5db3483b1c7e5b010f58ab90f2c6357a109a61c26edcb0817d1488177a8d2d4cc78bc075796d5067bc6ddbcbb6f66452fccb855c6793a593e6a8e8809123ae78e26a95e94e860efda4857aecd777768809c999a0e585439dfc0e4d730b31c967b8e597e135c58f6ab6370eb2a47291b30",
+        "predict": "Z",
+        "completed": true,
+        "time": "2024-10-21T10:55:34.579052"
+    },
+    {
+        "name": "predict image from file_path",
+        "input": "https://storage.googleapis.com/kagglesdsdata/datasets/589922/1064771/Test/C/1069_C.jpg?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=databundle-worker-v2%40kaggle-161607.iam.gserviceaccount.com%2F20241021%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20241021T035658Z&X-Goog-Expires=345600&X-Goog-SignedHeaders=host&X-Goog-Signature=1a5e92ac2dabb789895def735f163d8ec2f81b914df0e094e8d36a2548bf1886351b6560a7d8b526b61ab5d649b64a519910ba2e863fb7efd49338008271192512a67578b82355726d23a6afa3eb88fd4c5cd3b56bcca939d9c2f826f1255c903815221259bc5137c5971ce05d8e0ebfca6dea5fb33804207064b923214ea1067895aa62901ad940d7ad5710cee82509ac60af9b59280c435f84f7c0cbf29f8b04479888f93a9c4377d9dfb8140ed2d3cf9b09d0b4e1e812617e8b0b56574fd36d3c9d4adb6989815d105492e453adfb93f5ed1898517b8961e8265f3e26dc08b0fe9a0d2ff0efb27b9d1ffd9ae9704c51bffc6d0af7839b2cd7e19f6f7f46b8",
+        "predict": "H",
+        "completed": true,
+        "time": "2024-10-21T10:57:14.912087"
     }
 ]

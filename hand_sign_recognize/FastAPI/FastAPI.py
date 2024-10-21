@@ -1,6 +1,7 @@
 
+
+import urllib.request
 from fastapi import FastAPI
-from prompt_toolkit.key_binding.bindings.named_commands import complete
 from pydantic import BaseModel
 from typing import Optional
 import uvicorn
@@ -32,25 +33,28 @@ def creat_object_history(name, input, predict,completed, time):
 
 @app.post("/predict")  # Đảm bảo sử dụng @app.post
 async def run(input: PathInput):
+    raw_input = input.path
+    try:
+        urllib.request.urlretrieve(input.path, 'test.jpg')
+        input.path = "test.jpg"
+    except Exception as e:
+        print(e)
     completed, predict = model.predict_by_photo(model_path, input.path)
     now = datetime.now()
     history = creat_object_history("predict image from file_path",
-                                   input.path,
+                                   raw_input,
                                    predict,
                                    completed,
                                    now.isoformat())
     data_history.append(history)
     raw.write_json(path_history, data_history)
-    return creat_object_history("predict image from file_path",
-                                   input.path,
-                                   predict,
-                                   completed,
-                                   now.isoformat())
+    return history
+
+
 
 @app.post("/run_model")
 async def run2(input: Modelintput):
     now = datetime.now()
-    result = "True" if input.script == "video" or input.script == "photo" else "False"
     if input.script == "video" or input.script == "photo":
         completed, preddict = model.predict_by_video(model_path,input.script)
         history = creat_object_history("predict from camera",
@@ -60,11 +64,7 @@ async def run2(input: Modelintput):
                                        now.isoformat())
         data_history.append(history)
         raw.write_json(path_history, data_history)
-        return creat_object_history("predict from camera",
-                                       input.script,
-                                       preddict,
-                                       completed,
-                                       now.isoformat())
+        return history
     return creat_object_history("predict from camera",
                                        input.script,
                                        ["None"],

@@ -1,10 +1,6 @@
 import numpy as np
-import tensorflow as tf
 from tensorflow.keras import layers, models
-from tensorflow.keras.utils import to_categorical
-from tensorflow.keras.callbacks import EarlyStopping
-
-from hand_sign_recognize.Scripts.splitData import X_train,X_test,Y_train,Y_test
+from hand_sign_recognize.Scripts.splitData import X_train, X_test, Y_train, Y_test
 from hand_sign_recognize.Scripts.checkGPU import check_GPU
 
 check_GPU()

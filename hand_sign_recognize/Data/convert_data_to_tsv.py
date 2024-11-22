@@ -3,6 +3,7 @@ import numpy as np
 from tensorflow.keras.utils import to_categorical
 from PIL import Image
 
+
 # Hàm để tải dữ liệu từ thư mục và lưu thành file TSV
 def create_tsv(data_dir, output_file, num_classes=36):
     images = []
@@ -22,20 +23,25 @@ def create_tsv(data_dir, output_file, num_classes=36):
     labels_one_hot = to_categorical(labels, num_classes=num_classes)
     # Kết hợp ảnh và nhãn one-hot để lưu
     data = np.hstack((images, labels_one_hot))  # Gộp dữ liệu ảnh và nhãn vào cùng một mảng
+    data = np.array(data, dtype=np.float32)
     # Tạo tiêu đề
     header = "\t".join(
         [f"Pixel_{i}" for i in range(images[0].size)] +
         [f"Label_{i}" for i in range(num_classes)]
     )
     # Lưu thành file TSV
-    np.savetxt(output_file, data, delimiter="\t", fmt="%.6f", header=header, comments="")
+    np.savetxt(output_file, data, delimiter="\t", fmt="%.0f", header=header, comments="")
     print(f"Dữ liệu đã được lưu vào {output_file}")
+
+
 # Hàm để tải dữ liệu từ file TSV
 def load_from_tsv(tsv_file, img_shape=(32, 32, 3), num_classes=36):
     data = np.loadtxt(tsv_file, delimiter="\t", skiprows=1)  # Bỏ qua dòng tiêu đề
     images = data[:, :-num_classes].reshape(-1, *img_shape)  # Lấy các giá trị pixel, reshape thành ảnh
     labels = data[:, -num_classes:]  # Lấy nhãn ở định dạng one-hot
     return images, labels
+
+
 # Đường dẫn đến thư mục dữ liệu
 train_dir = r'..\Data\Gesture Image Pre-Processed Data'
 test_dir = r'..\Data\Gesture Image Pre-Processed Data - Test'
@@ -63,4 +69,3 @@ create_tsv(test_dir, test_tsv)
 #                     labels.append(class_names.index(label))  # Gán nhãn lớp
 #
 #     return np.array(images), to_categorical(np.array(labels), num_classes=36)  # Trả về mảng NumPy của ảnh và nhãn
-

@@ -22,7 +22,7 @@ cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1080)  # Đặt độ phân giải khung hình
 
 # Khởi tạo nhận diện bàn tay
 hands = mp_hands.Hands(static_image_mode=False,
-                       max_num_hands=2, # số tay có thể dùng
+                       max_num_hands=2,  # số tay có thể dùng
                        min_detection_confidence=0.5,
                        min_tracking_confidence=0.5)
 
@@ -35,19 +35,18 @@ def predict_by_photo(model_path, image_path):
             image = cv2.imread(image_path)
             # ngoại trừ "video" thì truyền type gì cũng được
             result, img_prepared = predict_image(model, image, "photo")
-            cv2.imshow("Thresh", cv2.resize(img_prepared, (310,310), fx=0.5, fy=0.5))
+            cv2.imshow("Thresh", cv2.resize(img_prepared, (310, 310), fx=0.5, fy=0.5))
             print("Dự đoán:", result)
             sleep(3)
-            return True , result
+            return True, result
     except Exception as e:
         print(e)
-        return False , ""
-
+        return False, ""
 
 
 # hàm dự đoán qua video camera
 def predict_by_video(model_path, type):
-    try :
+    try:
         letters = list()
         model = load_model(model_path)
         photo_path = f'photo_taken.jpg'

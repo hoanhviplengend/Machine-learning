@@ -20,6 +20,7 @@ def prepare_image(image):
     ret, thresh = cv2.threshold(blur, threshold, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)
     return ret, thresh
 
+
 # Hàm xóa nền cho ảnh
 def remove_background(image):
     # Chuyển đổi ảnh sang không gian màu xám
@@ -82,6 +83,7 @@ def flip_images_horizontally(folder_path):
             cv2.imwrite(img_path, flipped_img)
 
     print("Đã lật tất cả ảnh theo chiều ngang.")
+
 
 # Dự đoán ảnh (đầy đủ)
 def predict_image(model, image, type):

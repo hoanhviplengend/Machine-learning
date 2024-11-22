@@ -1,16 +1,12 @@
-
-import os
 import sys
-import numpy as np
 import warnings
+import numpy as np
 import tensorflow as tf
 import matplotlib.pyplot as plt
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Conv2D, AveragePooling2D, Flatten, Dense, Dropout, BatchNormalization
 from tensorflow.keras.callbacks import ReduceLROnPlateau, EarlyStopping, ModelCheckpoint
-from tensorflow.keras.utils import to_categorical
-from PIL import Image
 
 warnings.filterwarnings("ignore")
 checkpoint = ModelCheckpoint('../Scripts/best_model_lenet.h5', monitor='val_loss', save_best_only=True, mode='min')
@@ -22,34 +18,21 @@ else:
     print("Không tìm thấy GPU.")
     sys.exit()
 
-
-# Hàm để tải dữ liệu từ thư mục
-def load_data(data_dir):
-    images = []
-    labels = []
-    class_names = os.listdir(data_dir)  # Lấy tên các lớp từ thư mục
-
-    for label in class_names:
-        class_dir = os.path.join(data_dir, label)
-        if os.path.isdir(class_dir):  # Kiểm tra xem đây có phải là thư mục không
-            for filename in os.listdir(class_dir):
-                if filename.endswith('.png') or filename.endswith('.jpg'):  # Kiểm tra định dạng tệp
-                    img_path = os.path.join(class_dir, filename)
-                    image = Image.open(img_path).convert('RGB')  # Chuyển đổi thành ảnh RGB
-                    image = image.resize((32, 32))  # Thay đổi kích thước ảnh
-                    images.append(np.array(image))
-                    labels.append(class_names.index(label))  # Gán nhãn lớp
-
-    return np.array(images), to_categorical(np.array(labels), num_classes=36)  # Trả về mảng NumPy của ảnh và nhãn
-
-
 # Đường dẫn đến thư mục dữ liệu
-train_dir = r'..\Data\Gesture Image Pre-Processed Data'
-test_dir = r'..\Data\Gesture Image Pre-Processed Data - Test'
+train_tsv = r"..\Data\train_data.tsv"
+test_tsv = r"..\Data\test_data.tsv"
+
+
+def load_from_tsv(tsv_file, img_shape=(32, 32, 3), num_classes=36):
+    data = np.loadtxt(tsv_file, delimiter="\t", skiprows=1)  # Bỏ qua dòng tiêu đề
+    images = data[:, :-num_classes].reshape(-1, *img_shape)  # Lấy các giá trị pixel, reshape thành ảnh
+    labels = data[:, -num_classes:]  # Lấy nhãn ở định dạng one-hot
+    return images, labels
+
 
 # Tải dữ liệu
-X_train, Y_train = load_data(train_dir)
-X_test, Y_test = load_data(test_dir)
+X_train, Y_train = load_from_tsv(train_tsv)
+X_test, Y_test = load_from_tsv(test_tsv)
 
 # Đảm bảo dữ liệu có định dạng đúng
 X_train = X_train.astype('float32') / 255  # Chuẩn hóa dữ liệu
@@ -128,4 +111,6 @@ def draw_chart_loss(history):
     plt.legend()
 
     plt.show()
+
+
 draw_chart_loss(history)

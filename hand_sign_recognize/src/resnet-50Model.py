@@ -2,11 +2,10 @@ from tensorflow.keras.applications import ResNet50
 from tensorflow.keras.models import Model
 from tensorflow.keras.layers import Dense, GlobalAveragePooling2D
 from tensorflow.keras.callbacks import EarlyStopping
-from hand_sign_recognize.Scripts.splitData import X_train,X_test,Y_train,Y_test
+from hand_sign_recognize.Scripts.splitData import X_train, X_test, Y_train, Y_test
 from hand_sign_recognize.Scripts.checkGPU import check_GPU
 
 check_GPU()
-
 
 # Tải ResNet50 pre-trained với ImageNet
 base_model = ResNet50(weights='imagenet', include_top=False, input_shape=(32, 32, 3))

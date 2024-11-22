@@ -1,7 +1,7 @@
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Conv2D, MaxPooling2D, Flatten, Dense
 from tensorflow.keras.callbacks import EarlyStopping
-from hand_sign_recognize.Scripts.splitData import X_train,X_test,Y_train,Y_test
+from hand_sign_recognize.Scripts.splitData import X_train, X_test, Y_train, Y_test
 from hand_sign_recognize.Scripts.checkGPU import check_GPU
 
 # kiểm tra GPU có ss kho6ng

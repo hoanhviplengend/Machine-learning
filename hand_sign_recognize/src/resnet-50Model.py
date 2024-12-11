@@ -27,7 +27,7 @@ for layer in base_model.layers:
 model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
 
 # Thêm EarlyStopping để dừng huấn luyện sớm nếu không có cải thiện
-early_stopping = EarlyStopping(monitor='val_loss', patience=5, restore_best_weights=True)
+early_stopping = EarlyStopping(monitor='val_loss', patience=3, restore_best_weights=True)
 
 # Huấn luyện mô hình
 history = model.fit(

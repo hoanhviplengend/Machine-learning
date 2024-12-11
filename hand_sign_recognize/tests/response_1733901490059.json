@@ -1,0 +1,7 @@
+{
+  "name": "Predict image from local file",
+  "input": "j.jpg",
+  "predict": "J",
+  "completed": true,
+  "time": "2024-12-11T14:18:10.049756"
+}

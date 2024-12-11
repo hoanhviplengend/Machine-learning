@@ -420,5 +420,54 @@
         "predict": "H",
         "completed": true,
         "time": "2024-10-21T10:57:14.912087"
+    },
+    {
+        "name": "Predict image from local file",
+        "input": "v.jpg",
+        "predict": "C",
+        "completed": true,
+        "time": "2024-12-11T14:15:04.339381"
+    },
+    {
+        "name": "Predict image from local file",
+        "input": "j.jpg",
+        "predict": "C",
+        "completed": true,
+        "time": "2024-12-11T14:17:04.892442"
+    },
+    {
+        "name": "Predict image from local file",
+        "input": "l.jpg",
+        "predict": "C",
+        "completed": true,
+        "time": "2024-12-11T14:17:15.353272"
+    },
+    {
+        "name": "Predict image from local file",
+        "input": "l.jpg",
+        "predict": "C",
+        "completed": true,
+        "time": "2024-12-11T14:17:20.717093"
+    },
+    {
+        "name": "Predict image from local file",
+        "input": "j.jpg",
+        "predict": "J",
+        "completed": true,
+        "time": "2024-12-11T14:18:10.049756"
+    },
+    {
+        "name": "Predict image from local file",
+        "input": "l.jpg",
+        "predict": "L",
+        "completed": true,
+        "time": "2024-12-11T14:18:24.962922"
+    },
+    {
+        "name": "Predict image from local file",
+        "input": "m.jpg",
+        "predict": "C",
+        "completed": true,
+        "time": "2024-12-11T14:20:10.359847"
     }
 ]

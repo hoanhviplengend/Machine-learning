@@ -17,7 +17,7 @@ def prepare_image(image):
     blur = cv2.GaussianBlur(gray, (blurValue, blurValue), 0)
 
     # nếu vùng bàn tay sáng dùng"THRESH_BINARY_INV" nếu vùng bàn tay tối dùng "THRESH_BINARY"
-    ret, thresh = cv2.threshold(blur, threshold, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)
+    ret, thresh = cv2.threshold(blur, threshold, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
     return ret, thresh
 
 
